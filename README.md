@@ -27,3 +27,8 @@ uses of *rpcbind*.
 
 Please refer to the usage and help output provided by `firewall-rpc-helper -h`
 for more detail information on how to use it.
+
+## License
+
+This program is published under the GNU GPL version 2.0. See the accompanied
+`LICENSE` file.
