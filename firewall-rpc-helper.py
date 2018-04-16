@@ -1,4 +1,4 @@
-#!/usr/bin/python -s
+#!/usr/bin/python3 -s
 # vim: noet ts=8 sw=8 sts=8 :
 
 # Author:
