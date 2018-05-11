@@ -165,7 +165,7 @@ ports belonging to the given rpcbind services. The
 output will be a space separated list of tuples of the
 form <PORT>/<PROTO>, where <PROTO> is one of tcp or
 udp.  This format is compatible with firewall-cmd
-syntax.  Example input: "-s ypbind rquotad" """),
+syntax.  Example input: "-s ypbind rquotad"."""),
 			nargs = '+',
 			metavar = "SERVICE"
 		)
