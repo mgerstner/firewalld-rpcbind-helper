@@ -1,7 +1,7 @@
 # Helper for use of rpcbind Based Protocols with firewalld
 
-With the new majors openSUSE Leap 15.0 and SUSE Linux Enterprise 15 the
-*SuSEfirewall2* default firewall is replaced by
+With the new major releases openSUSE Leap 15.0 and SUSE Linux Enterprise 15
+the *SuSEfirewall2* default firewall is replaced by
 [firewalld](https://www.firewalld.org/).
 
 While most features of *SuSEfirewall2* have an equivalent in *firewalld* there
