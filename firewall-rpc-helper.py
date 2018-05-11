@@ -29,6 +29,7 @@ import argparse
 import subprocess
 import random
 import textwrap
+import errno
 
 def error(*args, **kwargs):
 	kwargs["file"] = sys.stderr
@@ -88,6 +89,9 @@ class FirewallRPC(object):
 					cfg_service_names[config]
 				)
 			self.m_rpcbind_services = list(self.m_rpcbind_services)
+
+		def isInstalled(self):
+			return os.path.exists(self.m_sysconfig_file)
 
 	def __init__(self):
 
@@ -490,7 +494,10 @@ applicable (currently only firewall-cmd calls)."""),
 		print('-' * len(pattern.m_label))
 		print()
 		print("Static port configuration file:",
-				pattern.m_sysconfig_file)
+				pattern.m_sysconfig_file, end = '')
+		if not pattern.isInstalled():
+			print(" (package not installed)", end = '')
+		print()
 		print()
 
 		table_rows = []
@@ -557,14 +564,21 @@ applicable (currently only firewall-cmd calls)."""),
 
 		print("Reading current configuration from {}.".format(cfg))
 		print()
-		with open(cfg, 'r') as cfg_fd:
-			for line in cfg_fd.readlines():
-				line = self.processCfgLine(
-					line,
-					item_handler =
-						self.processCfgItemForChange
-				)
-				lines.append(line)
+		try:
+			with open(cfg, 'r') as cfg_fd:
+				for line in cfg_fd.readlines():
+					line = self.processCfgLine(
+						line,
+						item_handler =
+							self.processCfgItemForChange
+					)
+					lines.append(line)
+		except OSError as e:
+			if e.errno == errno.ENOENT:
+				print("Error: The package necessary for this pattern does not seem to be installed")
+				sys.exit(1)
+			else:
+				raise
 
 		print("Writing updated configuration to {}.".format(cfg))
 		with open(cfg, 'w') as cfg_fd:
@@ -789,12 +803,17 @@ applicable (currently only firewall-cmd calls)."""),
 		self.m_static_ports = {}
 		cfg = pattern.m_sysconfig_file
 
-		with open(cfg, 'r') as cfg_fd:
-			for line in cfg_fd.readlines():
-				self.processCfgLine(
-					line,
-					self.processCfgItemForParsing
-				)
+		try:
+			with open(cfg, 'r') as cfg_fd:
+				for line in cfg_fd.readlines():
+					self.processCfgLine(
+						line,
+						self.processCfgItemForParsing
+					)
+		except OSError as e:
+			if e.errno == errno.ENOENT:
+				# probably not installed
+				pass
 
 	def processCfgItemForParsing(self, key, val):
 
