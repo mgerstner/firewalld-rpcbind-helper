@@ -400,7 +400,7 @@ applicable (currently only firewall-cmd calls)."""),
 			stderr = subprocess.STDOUT
 		)
 
-		output = proc.stdout.read()
+		output = proc.stdout.read().decode()
 
 		res = proc.wait()
 
