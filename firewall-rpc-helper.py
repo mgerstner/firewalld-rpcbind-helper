@@ -640,7 +640,7 @@ applicable (currently only firewall-cmd calls)."""),
 				proto = current["udp"]
 			else:
 				# any protocol must do
-				proto = current.values()[0]
+				proto = list(current.values())[0]
 
 			for port in proto:
 				# return the first port (usually only one)
